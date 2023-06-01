@@ -8,7 +8,7 @@ import (
 	"github.com/nurmeden/PaymentGateway/payment-service/config"
 )
 
-func initRedisClient(redisConfig config.RedisConfig) *redis.Client {
+func InitRedisClient(redisConfig config.RedisConfig) *redis.Client {
 	client := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", redisConfig.Host, redisConfig.Port),
 		Password: "",
