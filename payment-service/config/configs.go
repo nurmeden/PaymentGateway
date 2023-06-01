@@ -8,6 +8,7 @@ import (
 type Config struct {
 	Database DatabaseConfig
 	Redis    RedisConfig
+	Port     string
 }
 type DatabaseConfig struct {
 	Host     string
@@ -36,6 +37,8 @@ func LoadConfig() (Config, error) {
 
 	viper.BindEnv("Redis.Host", "REDIS_HOST")
 	viper.BindEnv("Redis.Port", "REDIS_PORT")
+
+	viper.BindEnv("Config.Port", "PORT_APP")
 
 	var cfg Config
 	err = viper.Unmarshal(&cfg)
