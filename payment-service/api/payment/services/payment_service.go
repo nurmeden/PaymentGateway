@@ -8,6 +8,7 @@ import (
 )
 
 type PaymentService interface {
+	CreatePayment(payment *models.Payment) error
 }
 
 type paymentService struct {
