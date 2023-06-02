@@ -3,9 +3,11 @@ package main
 import (
 	"log"
 
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
+	"github.com/nurmeden/PaymentGateway/payment-service/api/payment/handlers"
+	"github.com/nurmeden/PaymentGateway/payment-service/api/payment/repositories"
+	"github.com/nurmeden/PaymentGateway/payment-service/api/payment/services"
 	"github.com/nurmeden/PaymentGateway/payment-service/config"
-	"github.com/nurmeden/PaymentGateway/payment-service/pkg/cache"
 	"github.com/nurmeden/PaymentGateway/payment-service/pkg/database"
 )
 
@@ -20,18 +22,18 @@ func main() {
 	}
 	defer db.Close()
 
-	redisClient := cache.InitRedisClient(cfg.Redis)
+	// redisClient := cache.InitRedisClient(cfg.Redis)
 
 	e := echo.New()
 
 	paymentRepository := repositories.NewPaymentRepository(db)
-	paymentService := services.NewPaymentService(paymentRepository, redisClient)
+	paymentService := services.NewPaymentService(paymentRepository)
 	paymentHandler := handlers.NewPaymentHandler(paymentService)
 
 	e.POST("/payments", paymentHandler.CreatePayment)
-	e.GET("/payments/:id", paymentHandler.GetPaymentByID)
-	e.PUT("/payments/:id", paymentHandler.UpdatePayment)
-	e.DELETE("/payments/:id", paymentHandler.DeletePayment)
+	// e.GET("/payments/:id", paymentHandler.GetPaymentByID)
+	// e.PUT("/payments/:id", paymentHandler.UpdatePayment)
+	// e.DELETE("/payments/:id", paymentHandler.DeletePayment)
 
 	port := cfg.Port
 	if port == "" {
