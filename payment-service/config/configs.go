@@ -1,6 +1,8 @@
 package config
 
 import (
+	"fmt"
+
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 )
@@ -24,8 +26,9 @@ type RedisConfig struct {
 }
 
 func LoadConfig() (Config, error) {
-	err := godotenv.Load()
+	err := godotenv.Load("./payment-service/.env")
 	if err != nil {
+		fmt.Printf("err.Error(): %v\n", err.Error())
 		return Config{}, err
 	}
 
