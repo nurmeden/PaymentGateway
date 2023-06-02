@@ -26,7 +26,7 @@ type RedisConfig struct {
 }
 
 func LoadConfig() (Config, error) {
-	err := godotenv.Load("./payment-service/.env")
+	err := godotenv.Load("./.env")
 	if err != nil {
 		fmt.Printf("err.Error(): %v\n", err.Error())
 		return Config{}, err
