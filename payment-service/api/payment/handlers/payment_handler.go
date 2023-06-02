@@ -8,17 +8,17 @@ import (
 	"github.com/nurmeden/PaymentGateway/shared/models"
 )
 
-type PaymentHandler struct {
+type paymentHandler struct {
 	paymentService services.PaymentService
 }
 
-func NewPaymentHandler(paymentService services.PaymentService) *PaymentHandler {
-	return &PaymentHandler{
+func NewPaymentHandler(paymentService services.PaymentService) *paymentHandler {
+	return &paymentHandler{
 		paymentService: paymentService,
 	}
 }
 
-func (h *PaymentHandler) CreatePayment(c echo.Context) error {
+func (h *paymentHandler) CreatePayment(c echo.Context) error {
 	payment := new(models.Payment)
 	if err := c.Bind(payment); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
@@ -33,8 +33,8 @@ func (h *PaymentHandler) CreatePayment(c echo.Context) error {
 
 }
 
-func (h *PaymentHandler) GetPaymentByID(w http.ResponseWriter, r *http.Request) {}
+// func (h *PaymentHandler) GetPaymentByID(w http.ResponseWriter, r *http.Request) {}
 
-func (h *PaymentHandler) UpdatePayment(w http.ResponseWriter, r *http.Request) {}
+// func (h *PaymentHandler) UpdatePayment(w http.ResponseWriter, r *http.Request) {}
 
-func (h *PaymentHandler) DeletePayment(w http.ResponseWriter, r *http.Request) {}
+// func (h *PaymentHandler) DeletePayment(w http.ResponseWriter, r *http.Request) {}
