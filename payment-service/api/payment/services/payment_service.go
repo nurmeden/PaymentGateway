@@ -1,6 +1,11 @@
 package services
 
-import "github.com/nurmeden/PaymentGateway/payment-service/api/payment/repositories"
+import (
+	"fmt"
+
+	"github.com/nurmeden/PaymentGateway/payment-service/api/payment/repositories"
+	"github.com/nurmeden/PaymentGateway/shared/models"
+)
 
 type PaymentService interface {
 }
@@ -13,4 +18,13 @@ func NewPaymentService(paymentRepo repositories.PaymentRepository) PaymentServic
 	return &paymentService{
 		paymentRepo: paymentRepo,
 	}
+}
+
+func (s *paymentService) CreatePayment(payment *models.Payment) error {
+	err := s.paymentRepo.CreatePayment(payment)
+	if err != nil {
+		fmt.Printf("err.Error(): %v\n", err.Error())
+		return err
+	}
+	return nil
 }
