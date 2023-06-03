@@ -48,6 +48,51 @@ func (h *paymentHandler) GetPaymentByID(c echo.Context) error {
 	return c.JSON(http.StatusOK, payment)
 }
 
-// func (h *PaymentHandler) UpdatePayment(w http.ResponseWriter, r *http.Request) {}
+func (h *paymentHandler) UpdatePayment(c echo.Context) error {
+	paramId := c.Param("id")
+	id, err := strconv.ParseInt(paramId, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+
+	existingPayment, err := h.paymentService.GetPaymentByID(id)
+	if err != nil {
+		return c.JSON(http.StatusNoContent, err.Error())
+	}
+
+	requestBody := make(map[string]interface{})
+	if err := c.Bind(&requestBody); err != nil {
+		return c.JSON(http.StatusBadRequest, models.ErrorResponse{Message: "Invalid request body"})
+	}
+
+	if amount, ok := requestBody["amount"].(float64); ok {
+		existingPayment.Amount = amount
+	}
+	if status, ok := requestBody["status"].(string); ok {
+		existingPayment.Status = status
+	}
+	if method, ok := requestBody["method"].(string); ok {
+		existingPayment.Method = method
+	}
+
+	// updatedPayment := &models.Payment{}
+	// if err := c.Bind(updatedPayment); err != nil {
+	// 	return c.JSON(http.StatusBadRequest, models.ErrorResponse{Message: "Invalid request body"})
+	// }
+
+	// existingPayment.Amount = updatedPayment.Amount
+	// if updatedPayment.Status != "" {
+	// 	existingPayment.Status = updatedPayment.Status
+	// } else if updatedPayment.Method != "" {
+	// 	existingPayment.Method = updatedPayment.Method
+	// }
+
+	updatedPayment, err := h.paymentService.UpdatePayment(existingPayment)
+	if err != nil {
+		return c.JSON(http.StatusNotFound, err.Error())
+	}
+
+	return c.JSON(http.StatusCreated, updatedPayment)
+}
 
 // func (h *PaymentHandler) DeletePayment(w http.ResponseWriter, r *http.Request) {}
