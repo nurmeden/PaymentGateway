@@ -31,8 +31,8 @@ func main() {
 	paymentHandler := handlers.NewPaymentHandler(paymentService)
 
 	e.POST("/payments", paymentHandler.CreatePayment)
-	// e.GET("/payments/:id", paymentHandler.GetPaymentByID)
-	// e.PUT("/payments/:id", paymentHandler.UpdatePayment)
+	e.GET("/payments/:id", paymentHandler.GetPaymentByID)
+	e.PUT("/payments/:id", paymentHandler.UpdatePayment)
 	// e.DELETE("/payments/:id", paymentHandler.DeletePayment)
 
 	port := cfg.Port
