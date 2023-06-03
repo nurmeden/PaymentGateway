@@ -33,7 +33,19 @@ func (h *paymentHandler) CreatePayment(c echo.Context) error {
 
 }
 
-// func (h *PaymentHandler) GetPaymentByID(w http.ResponseWriter, r *http.Request) {}
+func (h *paymentHandler) GetPaymentByID(c echo.Context) error {
+	payment := new(models.Payment)
+	if err := c.Bind(payment); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	payment, err := h.paymentService.GetPaymentByID(payment.ID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, payment)
+}
 
 // func (h *PaymentHandler) UpdatePayment(w http.ResponseWriter, r *http.Request) {}
 
