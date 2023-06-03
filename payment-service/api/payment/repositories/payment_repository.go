@@ -10,7 +10,7 @@ import (
 type PaymentRepository interface {
 	CreatePayment(payment *models.Payment) error
 	GetPaymentByID(id int64) (*models.Payment, error)
-	// UpdatePayment(payment *models.Payment) (*models.Payment, error)
+	UpdatePayment(payment *models.Payment) (*models.Payment, error)
 	// DeletePayment(id string) error
 }
 
@@ -50,12 +50,12 @@ func (r *paymentRepository) GetPaymentByID(id int64) (*models.Payment, error) {
 	return payment, nil
 }
 
-// func (r *paymentRepository) UpdatePayment(payment *models.Payment) (*models.Payment, error) {
-// 	query := "UPDATE payments SET amount = $1, status = $2, method = $3 WHERE id = $4"
-// 	_, err := r.db.Exec(query, payment.Amount, payment.Status, payment.Method, payment.ID)
-// 	if err != nil {
-// 		return nil, err
-// 	}
+func (r *paymentRepository) UpdatePayment(payment *models.Payment) (*models.Payment, error) {
+	query := "UPDATE payments SET amount = $1, status = $2, method = $3 WHERE id = $4"
+	_, err := r.db.Exec(query, payment.Amount, payment.Status, payment.Method, payment.ID)
+	if err != nil {
+		return nil, err
+	}
 
-// 	return payment, nil
-// }
+	return payment, nil
+}
