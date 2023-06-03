@@ -9,7 +9,7 @@ import (
 
 type PaymentRepository interface {
 	CreatePayment(payment *models.Payment) error
-	// GetPaymentById(id string) (models.Payment, error)
+	GetPaymentByID(id int64) (*models.Payment, error)
 	// UpdatePayment(payment *models.Payment) error
 	// DeletePayment(id string) error
 }
@@ -35,4 +35,18 @@ func (h *paymentRepository) CreatePayment(payment *models.Payment) error {
 	}
 
 	return nil
+}
+
+func (r *paymentRepository) GetPaymentByID(id int64) (*models.Payment, error) {
+	query := `SELECT id, amount, status, method FROM payments WHERE id = $1`
+	payment := &models.Payment{}
+	err := r.db.QueryRow(query, id).Scan(&payment.ID, &payment.Amount, &payment.Method, &payment.Status)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, errors.New("payment not found")
+		}
+		return nil, err
+	}
+
+	return payment, nil
 }
