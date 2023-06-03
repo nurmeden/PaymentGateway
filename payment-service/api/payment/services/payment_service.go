@@ -10,6 +10,7 @@ import (
 type PaymentService interface {
 	CreatePayment(payment *models.Payment) error
 	GetPaymentByID(id int64) (*models.Payment, error)
+	UpdatePayment(payment *models.Payment) (*models.Payment, error)
 }
 
 type paymentService struct {
@@ -37,4 +38,12 @@ func (s *paymentService) GetPaymentByID(id int64) (*models.Payment, error) {
 		return nil, err
 	}
 	return payment, nil
+}
+
+func (s *paymentService) UpdatePayment(payment *models.Payment) (*models.Payment, error) {
+	updatedPayment, err := s.paymentRepo.UpdatePayment(payment)
+	if err != nil {
+		return nil, err
+	}
+	return updatedPayment, nil
 }
