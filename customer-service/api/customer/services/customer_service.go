@@ -7,6 +7,7 @@ import (
 
 type CustomerService interface {
 	CreateCustomer(customer *models.Customer) error
+	GetCustomerByID(id int64) (*models.Customer, error)
 }
 
 type customerService struct {
@@ -26,4 +27,13 @@ func (s *customerService) CreateCustomer(customer *models.Customer) error {
 	}
 
 	return nil
+}
+
+func (s *customerService) GetCustomerByID(id int64) (*models.Customer, error) {
+	customer, err := s.customerRepository.GetCustomerByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return customer, nil
 }
