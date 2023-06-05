@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo"
 	"github.com/nurmeden/PaymentGateway/customer-service/config"
+	"github.com/nurmeden/PaymentGateway/customer-service/pkg/database"
 )
 
 func main() {
@@ -14,5 +15,11 @@ func main() {
 	}
 
 	e := echo.New()
+
+	db, err := database.InitDatabase(cfg.Database)
+	if err != nil {
+		log.Fatalf("failed to connect to the database: %s", err.Error())
+	}
+	defer db.Close()
 
 }
