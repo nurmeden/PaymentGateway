@@ -33,6 +33,8 @@ func main() {
 	e.POST("/customers", customerHandler.CreateCustomer)
 	e.GET("/customers/:id", customerHandler.GetCustomerByID)
 	e.PUT("/customers", customerHandler.UpdateCustomer)
+	e.DELETE("/customers/:id", customerHandler.DeleteCustomer)
+
 	addr := fmt.Sprintf(":%s", cfg.Port)
 	log.Printf("Server started on %s", addr)
 	e.Start(addr)
