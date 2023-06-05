@@ -48,3 +48,12 @@ func (r *customerRepository) GetCustomerByID(id int64) (*models.Customer, error)
 	return &customer, nil
 
 }
+
+func (r *customerRepository) UpdateCustomer(customer *models.Customer) error {
+	query := `UPDATE customers SET name = $1, email = $2. phone = $3 WHERE id = $4`
+	_, err := r.db.Exec(query, customer.Name, customer.Email, customer.Phone, customer.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
