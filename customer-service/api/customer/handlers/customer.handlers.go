@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo"
 	customerServices "github.com/nurmeden/PaymentGateway/customer-service/api/customer/services"
@@ -26,6 +27,21 @@ func (h *customerHandler) CreateCustomer(c echo.Context) error {
 	}
 
 	err := h.customerService.CreateCustomer(customer)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, customer)
+}
+
+func (h *customerHandler) GetCustomerByID(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, "Invalid customer ID")
+	}
+
+	customer, err := h.customerService.GetCustomerByID(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
