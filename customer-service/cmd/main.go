@@ -4,6 +4,9 @@ import (
 	"log"
 
 	"github.com/labstack/echo"
+	"github.com/nurmeden/PaymentGateway/customer-service/api/customer/repositories"
+	"github.com/nurmeden/PaymentGateway/customer-service/api/customer/services"
+	"github.com/nurmeden/PaymentGateway/customer-service/api/payment/services"
 	"github.com/nurmeden/PaymentGateway/customer-service/config"
 	"github.com/nurmeden/PaymentGateway/customer-service/pkg/database"
 )
@@ -22,4 +25,6 @@ func main() {
 	}
 	defer db.Close()
 
+	customerRepo := repositories.NewCustomerRepository(db)
+	customerService := services.NewCustomerService(customerRepo)
 }
