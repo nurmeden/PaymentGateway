@@ -48,3 +48,26 @@ func (h *customerHandler) GetCustomerByID(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, customer)
 }
+
+func (h *customerHandler) UpdateCustomer(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, "Invalid customer ID")
+	}
+
+	customer := new(models.Customer)
+	if err := c.Bind(customer); err != nil {
+		return c.JSON(http.StatusBadRequest, err.Error())
+	}
+
+	customer.ID = id
+
+	err = h.customerService.UpdateCustomer(customer)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, customer)
+
+}
