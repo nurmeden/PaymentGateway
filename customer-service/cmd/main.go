@@ -29,4 +29,7 @@ func main() {
 	customerService := customerServices.NewCustomerService(customerRepo)
 	customerHandler := handlers.NewCustomerHandler(customerService)
 
+	e.POST("/customers", customerHandler.CreateCustomer)
+	e.GET("/customers/:id", customerHandler.GetCustomerByID)
+
 }
