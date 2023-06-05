@@ -48,3 +48,12 @@ func (s *customerService) UpdateCustomer(customer *models.Customer) error {
 
 	return nil
 }
+
+func (s *customerService) DeleteCustomer(id int64) error {
+	err := s.customerRepository.DeleteCustomer(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
