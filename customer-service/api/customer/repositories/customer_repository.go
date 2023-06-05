@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"errors"
 
 	"github.com/nurmeden/PaymentGateway/shared/models"
 )
@@ -29,4 +30,20 @@ func (r *customerRepository) CreateCustomer(customer *models.Customer) error {
 	}
 
 	return nil
+}
+
+func (r *customerRepository) GetCustomerByID(id int64) (*models.Customer, error) {
+	query := `SELECT id, name, email, phone FROM customers WHERE id = $1 `
+	row := r.db.QueryRow(query, id)
+	var customer models.Customer
+	err := row.Scan(&customer.ID, &customer.Name, &customer.Email, &customer.Phone)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, errors.New("customer not found")
+		}
+		return nil, err
+	}
+
+	return &customer, nil
+
 }
