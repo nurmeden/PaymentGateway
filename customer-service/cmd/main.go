@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/labstack/echo"
@@ -32,4 +33,7 @@ func main() {
 	e.POST("/customers", customerHandler.CreateCustomer)
 	e.GET("/customers/:id", customerHandler.GetCustomerByID)
 
+	addr := fmt.Sprintf(":%s", cfg.Port)
+	log.Printf("Server started on %s", addr)
+	e.Start(addr)
 }
