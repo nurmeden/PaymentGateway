@@ -10,6 +10,8 @@ import (
 type CustomerRepository interface {
 	CreateCustomer(customer *models.Customer) error
 	GetCustomerByID(id int64) (*models.Customer, error)
+	UpdateCustomer(customer *models.Customer) error
+	DeleteCustomer(id int64) error
 }
 
 type customerRepository struct {
