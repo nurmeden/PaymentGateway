@@ -71,3 +71,18 @@ func (h *customerHandler) UpdateCustomer(c echo.Context) error {
 	return c.JSON(http.StatusOK, customer)
 
 }
+
+func (h *customerHandler) DeleteCustomer(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, "Invalid customer ID")
+	}
+
+	err = h.customerService.DeleteCustomer(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, "Customer deleted successfully")
+}
