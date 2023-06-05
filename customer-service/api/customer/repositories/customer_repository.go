@@ -57,3 +57,12 @@ func (r *customerRepository) UpdateCustomer(customer *models.Customer) error {
 	}
 	return nil
 }
+
+func (r *customerRepository) DeleteCustomer(id int64) error {
+	query := `DELETE FROM customers WHERE id = $1`
+	_, err := r.db.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
